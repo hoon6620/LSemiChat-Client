@@ -39,7 +39,7 @@ const ROOMS: Array<RoomProps> = [
 ]
 
 // TODO: propsの設定
-export default function SideBar()  {
+export default function SideBar() {
   const [rooms, setRooms] = useState(ROOMS)
   const [keyword, setKeyword] = useState("")
 
@@ -67,7 +67,7 @@ export default function SideBar()  {
                 <Link href={`/rooms/${room.id}`}>
                   <a className="room-link">
                     <div>
-                      <img src={room.image} className="avatar avatar-32 round border" onError={(evt: SyntheticEvent<HTMLImageElement, Event>) => evt.target.src=DEFAULT_IMAGE_PATH} />
+                      <img src={room.image} className="avatar avatar-32 round border" onError={(evt: SyntheticEvent<HTMLImageElement, Event>) => evt.target.src = DEFAULT_IMAGE_PATH} />
                       <h2 className="h3 room-name">{room.name}</h2>
                     </div>
                     <div>

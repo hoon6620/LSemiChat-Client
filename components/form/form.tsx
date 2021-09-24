@@ -1,4 +1,4 @@
-import styles from '../form.module.scss'
+import styles from './form.module.scss'
 
 interface FormProps {
   method: "POST" | "GET",

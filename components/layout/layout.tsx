@@ -7,13 +7,15 @@ import { useEffect, useState } from 'react'
 import { User, UserService } from '../../services/user'
 import Navigation from '../navigation/navigation'
 import SideBar from '../sidebar/sidebar'
+import { Socket } from '../socket/socket'
 
 interface LayoutProps {
   children: React.ReactNode,
-  requiredAuth: boolean
+  requiredAuth: boolean,
+  ws: Socket,
 }
 
-export default function Layout({ children, requiredAuth }: LayoutProps) {
+export default function Layout({ children, requiredAuth, ws }: LayoutProps) {
   const router = useRouter()
   const [user, setUser] = useState({})
 
@@ -36,6 +38,15 @@ export default function Layout({ children, requiredAuth }: LayoutProps) {
         profile: data.profile,
       })
     })
+    window.onload = () => {
+      if (window.Notification) {
+        Notification.requestPermission();
+      }
+    }
+
+    if (!window.location.pathname.includes("/rooms/")) {
+      let ws = new Socket({});
+    }
   }, [])
   return (
     <>
@@ -56,7 +67,7 @@ export default function Layout({ children, requiredAuth }: LayoutProps) {
             : <></>
         }
         <div className="content-wrapper">
-          <div className="content">{ children }</div>
+          <div className="content">{children}</div>
         </div>
       </div>
     </>
