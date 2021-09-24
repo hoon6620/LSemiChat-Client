@@ -36,7 +36,7 @@ export class Socket extends Component<any, SocketState> {
                     type: "setup",
                     data: "",
                 }))
-                console.log("Log: Socket Open");
+                console.log("Log: Socket open");
             }
             else
             {
@@ -45,7 +45,7 @@ export class Socket extends Component<any, SocketState> {
                     data: this.state.thread,
                 });
                 this.state.ws.send(socketData);
-                console.log("Log: socket open (now room: " + this.state.thread + ")");
+                console.log("Log: Socket open (now room: " + this.state.thread + ")");
             }
         }
 
