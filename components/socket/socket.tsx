@@ -81,10 +81,7 @@ export class Socket extends Component<any, SocketState> {
             console.log("Log: Socket Error: ", err);
         }
 
-    };
-    componentDidUpdate(){
-    }
-    
+    };    
 
     sendMessage(message: string, grade: Number) {
         if(this.state.ws == null || this.state.ws.readyState === WebSocket.CLOSED){
@@ -101,11 +98,6 @@ export class Socket extends Component<any, SocketState> {
         })
         this.state.ws.send(socketdata)
     }
-}
-
-function Ex() {
-    let ws = new Socket({thread:"room1", acceptFunc:(msg)=>{console.log(msg)}})
-    ws.sendMessage("message", 1)
 }
 
 function notifycations(message: any) {

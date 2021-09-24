@@ -7,6 +7,10 @@ export default function RoomDialog() {
   useEffect(()=>{
     ws = new Socket({thread:(window.location.pathname).replace('/rooms/', ''), acceptFunc: ()=>{}});
   })
+
+  function SendMessage(msg: string, grade: number) {
+    ws.sendMessage(msg, grade);
+  }
   return (
     <Layout requiredAuth={true} ws={ws}>
       Dialog
