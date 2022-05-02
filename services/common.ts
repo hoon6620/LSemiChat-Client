@@ -20,6 +20,15 @@ export async function deleteRequest(path: string) {
   return res
 }
 
+export async function postFormRequest(path: string, body?: FormData) {
+  const res = await fetch(new Request(`${API_ROOT_URL}${path}`, {
+    method: "POST",
+    credentials: "include",
+    body: body
+  }))
+  return res.json()
+}
+
 const newRequest = (path: string, method: "GET" | "POST" | "PUT" | "DELETE", body?: object) => {
   return new Request(`${API_ROOT_URL}${path}`, {
     method: method,
