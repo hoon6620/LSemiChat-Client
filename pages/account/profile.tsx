@@ -1,26 +1,32 @@
-import { useEffect, useRef, useState } from "react";
 import Layout from "../../components/layout/layout";
-import { Socket } from "../../components/socket/socket";
+import { useRef, useState } from "react";
+import { postFormRequest } from "../../services/common";
 import { API_ROOT_URL } from "../../constants/constant";
-import { postFormRequest, postRequest } from "../../services/common";
+import { UserService } from "../../services/user";
 
-export default function RoomDialog() {
-  let ws: Socket;
-  let roomId: String
-  useEffect(()=>{
-    roomId = (window.location.pathname).replace('/rooms/', '');
-    ws = new Socket({thread:roomId, acceptFunc: ()=>{}});
+
+export default function UserDetail() {
+  const [file, setFile] = useState(null);
+  const [user, setUser] = useState({});
+  const fileRef = useRef();
+    
+  const res = UserService.getInstance().getSelf()
+  res.then(data => {
+    setUser({
+        id: data.id,
+        userId: data.user_id,
+        name: data.name,
+        image: data.image,
+        mail: data.mail,
+        profile: data.profile,
+      })
   })
 
-  function SendMessage(msg: string, grade: number) {
-    ws.sendMessage(msg, grade);
+  const fileChange = (e) => {
+    if(file !== '')
+      return () => {
+      }
   }
-
-  const [file, setFile] = useState(null);
-  const [previewURL, setPreviewURL] = useState('');
-  const [fileName, setFileName] = useState('');
-  const fileRef = useRef();
-
   const handleFileOnChange = event => {
     event.preventDefault();
     let file = event.target.files[0];
@@ -39,23 +45,26 @@ export default function RoomDialog() {
   const handleFileButtonClick  = (e) => {
     const formData = new FormData();
     formData.append(
-      "threadIcon",
+      "userIcon",
       file,
     )
-    let response = postFormRequest("/threads/" + roomId + "/icon", formData)
+    console.log(formData)
+    let response = postFormRequest("/account/icon", formData)
     response.then((r : Response) => {
-      setPreviewURL(API_ROOT_URL+ "/threads/" + roomId + "/icon/");
-      setFileName(r.message)
+      console.log(r)
     })
   }
+
+
   return (
-    <Layout requiredAuth={true} ws={ws}>
-      Dialog
+    <Layout requiredAuth={true}>
+      UserProfile
       <br/>
+      <p>
+      <img src={`${API_ROOT_URL}/users/${user.userId}/icon`} className="avatar avatar-32 round" alt="" />
+      </p>
       <input ref = {fileRef} id = "file" type='file' onChange={handleFileOnChange} accept="image/jpeg, image/png"></input>
       <button onClick= {handleFileButtonClick}>Upload</button>
-      <div>{fileName}</div>
-      <img src={previewURL} alt="" />
     </Layout>
   )
 }

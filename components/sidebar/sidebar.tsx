@@ -2,7 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { useState, MouseEvent, ChangeEvent, SyntheticEvent } from 'react'
 import Link from 'next/link'
-import { DEFAULT_IMAGE_PATH } from '../../constants/constant'
+import { API_ROOT_URL, DEFAULT_IMAGE_PATH } from '../../constants/constant'
+import { getRequest } from '../../services/common'
 
 // TODO: 仮置き
 interface RoomProps {
@@ -13,35 +14,11 @@ interface RoomProps {
   summary: string,
 }
 
-// TODO: apiから取得する
-const ROOMS: Array<RoomProps> = [
-  {
-    id: "1",
-    image: "",
-    name: "room name",
-    user: "akubi",
-    summary: "sample, summary"
-  },
-  {
-    id: "2",
-    image: "",
-    name: "room name",
-    user: "akubi",
-    summary: "sample, summary"
-  },
-  {
-    id: "3",
-    image: "",
-    name: "room name",
-    user: "akubi",
-    summary: "sample, summary"
-  },
-]
-
 // TODO: propsの設定
 export default function SideBar() {
-  const [rooms, setRooms] = useState(ROOMS)
+  const [rooms, setRooms] = useState(new Array<RoomProps>())
   const [keyword, setKeyword] = useState("")
+  const [reload, setReload] = useState(true);
 
   const handleSubmit = (evt: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     evt.preventDefault()
@@ -49,7 +26,28 @@ export default function SideBar() {
     setKeyword("")
 
   }
-
+  
+  if(reload) {
+    getRequest("/account/threads")
+    .then((r: Response) => {
+      //console.log(r)
+      if(!r.threads) return;
+      let rooms = new Array<RoomProps>()
+      for(let i = 0; i < (r.threads).length; i++) {
+        let thread = r.threads[i];
+        rooms.push({
+          id: thread.id,
+          image: API_ROOT_URL + "/threads/" + thread.id + "/icon",
+          name: thread.name,
+          user: thread.author.name,
+          summary: thread.description
+        })
+      }
+      setRooms(rooms)
+      setReload(false)
+    })
+  }
+    
   return (
     <div className="sidebar-wrapper">
       <div className="search">

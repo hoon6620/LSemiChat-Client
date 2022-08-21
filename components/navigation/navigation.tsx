@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
 import { SyntheticEvent, MouseEvent } from 'react'
-import { DEFAULT_IMAGE_PATH } from '../../constants/constant'
+import { API_ROOT_URL, DEFAULT_IMAGE_PATH } from '../../constants/constant'
 import { AuthService } from '../../services/auth'
 
 interface NavigationProps {
@@ -69,9 +69,9 @@ function authNavigation(user: any): React.ReactNode {
       {
         Object.keys(user).length > 0
           ? <li className="nav-item">
-            <Link href={`/users/${user.id}`}>
+            <Link href={`/account/profile`}>
               <a className="nav-link">
-                <img src={user.image} className="avatar avatar-36 round" onError={(evt: SyntheticEvent<HTMLImageElement, Event>) => evt.target.src = DEFAULT_IMAGE_PATH} />
+                <img src={`${API_ROOT_URL}/users/${user.userId}/icon`} className="avatar avatar-36 round"/>
               </a>
             </Link>
           </li>

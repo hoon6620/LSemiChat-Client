@@ -525,3 +525,64 @@ body {
     }
   }
 }
+
+
+
+#text{
+  width: 100%; /*親要素いっぱい広げる*/
+  padding: 10px 15px; /*ボックスを大きくする*/
+  font-size: 16px;
+  border-radius: 3px; /*ボックス角の丸み*/
+  border: 2px solid #ddd; /*枠線*/
+  box-sizing: border-box; /*横幅の解釈をpadding, borderまでとする*/
+}
+
+#text:focus {
+  border: 2px solid #ff9900; 
+  z-index: 10;
+  outline: 0;
+}
+
+.center {
+  margin: auto;
+}
+
+.tab {
+  overflow: hidden;
+  background-color: white;
+  float: left;
+}
+
+
+.checkbox input[type="checkbox"] {
+  appearance: none;
+  border-radius: 15px;
+  height: 30px;
+  width: 100px;
+  margin: 5px;
+  background-color: tomato;
+  outline: none;
+  transition: background-color .3s;
+
+
+  &::before {
+    content: 'private';
+    display: block;
+    position: relative;
+    height: 15px;
+    width: 15px;
+    border-radius: 15px;
+    margin: 7px;
+    background-color: orange;
+    transition: width .5s;
+  }
+
+  &:checked::before {
+    content: 'public';
+    background-color: orange;
+    margin: 7px;
+    width: 85px;
+    transition: width .5s;
+    overflow: hidden;
+  }
+}

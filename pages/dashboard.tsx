@@ -6,9 +6,6 @@ export default function DashBoard() {
   return (
     <Layout requiredAuth={true}>
       <h1>Dashboard</h1>
-      <Link href="/rooms/create">
-        <a>Create Room</a>
-      </Link>
     </Layout>
   )
 }
