@@ -15,11 +15,6 @@ export default function RoomCreate() {
   const router = useRouter()
 
   const createTempThread = (e) => {
-    console.log(roomName)
-    console.log(description)
-    console.log(limitUser)
-    console.log(isPublic)
-    //return;
     let response = postRequest("/threads", {
       name: roomName,
       description: description,
@@ -28,7 +23,7 @@ export default function RoomCreate() {
     })
     response.then((r: Response) => {
       console.log(r)
-      if(file === null) return;
+      console.log(r.id)
       const formData = new FormData();
       formData.append(
         "threadIcon",
@@ -36,9 +31,9 @@ export default function RoomCreate() {
       )
       let response = postFormRequest("/threads/" + r.id + "/icon", formData)
       response.then((r: Response) => {
+        console.log("success")
         router.replace("/rooms/" + r.id)
       })
-
     })
   }
 
@@ -49,7 +44,6 @@ export default function RoomCreate() {
     reader.onloadend = (e) => {
       setFile(file);
       setIcon(reader.result.toString())
-      console.log(file)
     }
     if(file)
     {
@@ -60,38 +54,32 @@ export default function RoomCreate() {
   return (
     <Layout requiredAuth={true}>
       <h1>Room Create</h1>
-      <p>
-        <div>
-          <img className="avatar avatar-32 round border" src={icon} alt="" />
-        </div>
-        <div>
-          <input ref = {fileRef} id = "file" type='file' onChange={handleFileOnChange} accept="image/jpeg, image/png"></input>
-        </div>
-      </p>
+      <p />
+      <div>
+        <img className="avatar avatar-32 round border" src={icon} alt="" />
+      </div>
+      <div>
+        <input ref={fileRef} id="file" type='file' onChange={handleFileOnChange} accept="image/jpeg, image/png"></input>
+      </div>
 
-      <p>
-        <div>Room name</div>
-        <input type="text" className="text" onChange={(e)=>{setRoomName(e.target.value)}} value={roomName}/>
-      </p>
+      <p />
+      <div>Room name</div>
+      <input type="text" className="text" onChange={(e) => { setRoomName(e.target.value) }} value={roomName} />
 
-      <p>
-        <div>Description</div>
-        <input type="text" className="text" onChange={(e)=>{setDescription(e.target.value)}} value={description}/>
-      </p>
-      
-      <p>
-        <div>limit users : {limitUser}</div>
-        <input type="range" min={2} max={30} onChange={(e)=>{setLimitUser(parseInt(e.target.value, 10))}} value={limitUser}/>
-      </p>
-      
-      <p>
-        <div>Is {isPublic ? "Public" : "Private"}</div>
-        <input type="checkbox" onChange={(e)=>{setIsPublic(e.target.checked)}} checked={isPublic}/>
-      </p>
-      
-      <p>
+      <p />
+      <div>Description</div>
+      <input type="text" className="text" onChange={(e) => { setDescription(e.target.value) }} value={description} />
+
+      <p />
+      <div>limit users : {limitUser}</div>
+      <input type="range" min={2} max={30} onChange={(e) => { setLimitUser(parseInt(e.target.value, 10)) }} value={limitUser} />
+
+      <p />
+      <div>Is {isPublic ? "Public" : "Private"}</div>
+      <input type="checkbox" onChange={(e) => { setIsPublic(e.target.checked) }} checked={isPublic} />
+
+      <p />
         <button onClick= {createTempThread}>Create</button>
-      </p>
     </Layout>
   )
 }
